@@ -1,4 +1,4 @@
-package lesson3;
+package ua.lyashko.lesson3;
 
 public class Task5 {
     public static void main ( String[] args ) {

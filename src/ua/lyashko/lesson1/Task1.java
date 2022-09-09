@@ -1,4 +1,4 @@
-package lesson1;
+package ua.lyashko.lesson1;
 
 import java.time.LocalDateTime;
 
