@@ -4,15 +4,14 @@ package ua.lyashko.lesson3;
 import java.util.Scanner;
 
 public class Task3 {
-    Scanner scanner = new Scanner ( System.in );
-    String line = scanner.nextLine ( );
 
     public static void main ( String[] args ) {
-        Task3 str = new Task3 ();
-        str.count ();
+        Scanner scanner = new Scanner ( System.in );
+        String line = scanner.nextLine ( );
+        count ( line );
     }
 
-    public void count ( ) {
+    public static void count ( String line ) {
         int count = 0;
         if (line.length () != 0) {
             count++;
