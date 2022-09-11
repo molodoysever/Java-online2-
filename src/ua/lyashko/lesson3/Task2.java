@@ -16,14 +16,16 @@ public class Task2 {
         return lineDelSpace;
     }
 
-    public static void detector ( String line ) {
+    public static Boolean detector ( String line ) {
         StringBuilder buffer = new StringBuilder ( line );
         buffer.reverse();
         String data = buffer.toString();
         if(line.equals(data)){
             System.out.println("Given String is palindrome " + line);
-        }else{
+            return true;
+        } else{
             System.out.println("Given String is not palindrome " + line);
+            return false;
         }
     }
 }
