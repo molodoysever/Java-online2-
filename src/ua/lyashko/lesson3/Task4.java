@@ -4,15 +4,15 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Task4 {
-    Random random = new Random ( );
-    Scanner scanner = new Scanner ( System.in );
+
 
     public static void main ( String[] args ) {
-        Task4 randomizer = new Task4 ();
-        randomizer.util ();
+        Random random = new Random ( );
+        Scanner scanner = new Scanner ( System.in );
+        util ( scanner, random);
     }
 
-    public void util () {
+    public static void util (Scanner scanner, Random random) {
         int a = random.nextInt ( 10);
         int b;
         do {
