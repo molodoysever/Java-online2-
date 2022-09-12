@@ -4,27 +4,26 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Task4 {
-
-
     public static void main ( String[] args ) {
         Random random = new Random ( );
-        Scanner scanner = new Scanner ( System.in );
-        util ( scanner, random);
+        int a = random.nextInt ( 10);
+        boolean lessOrMore = util (a);
+        System.out.println (lessOrMore );
     }
 
-    public static void util (Scanner scanner, Random random) {
-        int a = random.nextInt ( 10);
+    public static boolean util ( int a) {
+        Scanner scanner = new Scanner ( System.in );
         int b;
         do {
-            System.out.println ("Введите число" );
+            System.out.println ( "Введите число" );
             b = scanner.nextInt ( );
-            if (a > b ) {
-                System.out.println ("Мало" );
-            } else if (a < b ) {
-                System.out.println ("Много" );
+            if (a > b) {
+                System.out.println ( "Мало" );
+            } else if (a < b) {
+                System.out.println ( "Много" );
             } else {
-                System.out.println ("Угадал " + a );
+                return true;
             }
-        } while ( b != a );
+        } while ( true );
     }
 }
