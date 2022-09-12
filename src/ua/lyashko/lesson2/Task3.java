@@ -7,14 +7,12 @@ public class Task3 {
         Scanner scanner = new Scanner ( System.in );
         System.out.println ("Enter a number:" );
         double a = scanner.nextDouble ( );
-        dividesByTwo (a);
+        boolean isEven = dividesByTwo (a);
+        System.out.println ("Number " + a + " is even: " + isEven );
     }
 
-    public static void dividesByTwo(double a) {
-        if ( a % 2 == 0 ) {
-            System.out.println ("Number " + a + " is even" );
-        } else {
-            System.out.println ("Number " + a + " is odd" );
-        }
+    public static boolean dividesByTwo(double a) {
+        return a % 2 == 0;
     }
 }
+

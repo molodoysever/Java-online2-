@@ -24,13 +24,13 @@ public class Task2 {
         System.out.println ("Enter C y3:" );
         double y3 = scanner.nextDouble ( );
 
-        calculate ( x1,x2, x3, y1, y2, y3 );
+        double calc = calculate ( x1,x2, x3, y1, y2, y3 );
+
+        System.out.println ("Square is: " + calc );
+
     }
 
-    public static void calculate (double x1, double x2, double x3, double y1, double y2, double y3) {
-
-        double square = (x1 * (y2 - y3) + x2 * ( y3 - y1 ) + x3 * ( y1 - y2 )) / 2;
-
-        System.out.println ("Square is: " + square );
+    public static double calculate ( double x1, double x2, double x3, double y1, double y2, double y3) {
+        return (x1 * (y2 - y3) + x2 * ( y3 - y1 ) + x3 * ( y1 - y2 )) / 2;
     }
 }
