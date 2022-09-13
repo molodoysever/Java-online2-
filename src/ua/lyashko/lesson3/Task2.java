@@ -7,7 +7,8 @@ public class Task2 {
     public static void main ( String[] args ) {
         Scanner scanner = new Scanner ( System.in );
         String line = scanner.nextLine ( );
-        detector ( deleteSpace ( line ) );
+        boolean isPalindrome = detector ( deleteSpace ( line ) );
+        System.out.println ("Given String is palindrome: " + isPalindrome );
     }
 
     public static String deleteSpace ( String line ) {
@@ -20,12 +21,6 @@ public class Task2 {
         StringBuilder buffer = new StringBuilder ( line );
         buffer.reverse();
         String data = buffer.toString();
-        if(line.equals(data)){
-            System.out.println("Given String is palindrome " + line);
-            return true;
-        } else{
-            System.out.println("Given String is not palindrome " + line);
-            return false;
-        }
+        return line.equals ( data );
     }
 }
