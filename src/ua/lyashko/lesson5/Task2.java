@@ -1,30 +1,18 @@
 package ua.lyashko.lesson5;
 
 import java.util.Arrays;
-import java.util.Random;
+import java.util.Collections;
 
 public class Task2 {
     public static void main ( String[] args ) {
-        int[] goods = new int[12];
-        fillArray ( goods );
-        System.out.println ( Arrays.toString ( goods ) );
-        System.out.println ("average sum: " + findAvgSum ( goods ));
+        Integer[] arr = {6 ,5 , 4 , 3 , 2 ,1 , 2};
+        System.out.println ( Arrays.toString ( arr ) );
+        System.out.println ( isDescending ( arr ) );
     }
 
-    public static int findAvgSum (int[] goods) {
-        int sum = 0;
-        for (int i : goods) {
-            if (i > 1000) {
-                sum += i;
-            }
-        }
-        return sum;
-    }
-
-    public static void fillArray(int[] numbers) {
-        Random random = new Random();
-        for (int i = 0; i < numbers.length; i++) {
-            numbers[i] = random.nextInt(5000);
-        }
+    public static boolean isDescending ( Integer[] arr ) {
+        Integer[] targetArr = Arrays.copyOf ( arr, arr.length );
+        Arrays.sort ( targetArr, Collections.reverseOrder () );
+        return Arrays.equals ( arr, targetArr );
     }
 }
