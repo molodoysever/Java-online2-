@@ -3,7 +3,7 @@ package ua.lyashko.lesson5;
 import java.util.Arrays;
 import java.util.Random;
 
-public class Practice_Task2 {
+public class PracticeTask2 {
     public static void main ( String[] args ) {
         int[] goods = new int[12];
         fillArray ( goods );
