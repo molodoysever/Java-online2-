@@ -5,14 +5,9 @@ import java.util.Random;
 
 public class Task3 {
     public static void main ( String[] args ) {
-        Random random = new Random ( );
         int[] arr = new int[1000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt ( 100 );
-            if (isComposite ( arr [i] )) {
-                System.out.println ( arr[i] + " is composite" );
-            }
-        }
+       fillArray ( arr );
+        System.out.println (countCompositeNumbers ( arr ) );
         System.out.println ( Arrays.toString ( arr ) );
     }
 
@@ -22,5 +17,22 @@ public class Task3 {
         for (int i = 5; i * i <= number; i = i + 6)
             if (number % i == 0 || number % (i + 2) == 0) return true;
         return false;
+    }
+
+    public static int countCompositeNumbers (int[] arr) {
+        int count = 0;
+        for (int j : arr) {
+            if (isComposite ( j )) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void fillArray(int[] arr) {
+        Random random = new Random ( );
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt ( 100 );
+        }
     }
 }
