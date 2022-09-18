@@ -5,17 +5,11 @@ import java.util.Random;
 
 public class Task2 {
     public static void main ( String[] args ) {
-        Random random = new Random ( );
         int[] arr = new int[1000];
-        for (int i = 0; i < arr.length; i++) {
-            arr[i] = random.nextInt ( 100 );
-            if (isPrime ( arr [i] )) {
-                System.out.println ( arr[i] + " is prime" );
-            }
-        }
-        System.out.println ( Arrays.toString ( arr ) );
+        fillArray ( arr );
+        System.out.println (countPrimeNumbers ( arr ) );
+        System.out.println ( Arrays.toString ( arr  ) );
     }
-
 
     private static boolean isPrime(int number) {
         int temp;
@@ -25,5 +19,22 @@ public class Task2 {
             if (temp == 0) return false;
         }
         return true;
+    }
+
+    public static int countPrimeNumbers(int[] arr) {
+        int count = 0;
+        for (int j : arr) {
+            if (isPrime ( j )) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public static void fillArray(int[] arr) {
+        Random random = new Random ( );
+        for (int i = 0; i < arr.length; i++) {
+            arr[i] = random.nextInt ( 100 );
+        }
     }
 }

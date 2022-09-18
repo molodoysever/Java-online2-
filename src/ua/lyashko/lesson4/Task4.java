@@ -11,10 +11,10 @@ public class Task4 {
             arr[i] = random.nextInt ( 100 );
         }
         System.out.println ( Arrays.toString ( arr ) );
-        System.out.println ( Arrays.toString ( isEven ( arr ) ) );
+        System.out.println ( Arrays.toString ( evenToNull ( arr ) ) );
     }
 
-    public static int[] isEven ( int[] arr) {
+    public static int[] evenToNull ( int[] arr) {
         int[] targetArr = Arrays.copyOf ( arr, arr.length );
         for (int i = 0; i < targetArr.length; i++){
             if (targetArr[i]% 2 == 0) {
