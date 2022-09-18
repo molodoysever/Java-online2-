@@ -1,6 +1,6 @@
 package ua.lyashko.lesson5;
 
-public class Practice_Task1 {
+public class PracticeTask1 {
     public static void main ( String[] args ) {
         int[] heights = {120, -125, 135, -145, 150, -152, 112, -175, 123, -125,
                 122, -135, 145, -154, 160, -183, 150, -130, 130, -119,
