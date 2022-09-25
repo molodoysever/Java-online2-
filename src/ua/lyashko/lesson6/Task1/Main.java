@@ -21,13 +21,13 @@ public class Main {
         System.out.println ("model: " + phone2.model + " number: " + phone2.number + " weight: " + phone2.weight );
         System.out.println ("model: " + phone3.model + " number: " + phone3.number + " weight: " + phone3.weight );
 
-        phone1.receiveCall ();
+        phone1.receiveCall ( phone1.name );
         phone1.getNumber ();
 
-        phone2.receiveCall ();
+        phone2.receiveCall ( phone2.name );
         phone2.getNumber ();
 
-        phone3.receiveCall ();
+        phone3.receiveCall ( phone3.name );
         phone3.getNumber ();
     }
 }

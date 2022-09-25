@@ -20,7 +20,7 @@ public class Phone {
     public Phone () {
     }
 
-    public void receiveCall() {
+    public void receiveCall( String name) {
         System.out.println ("Call: " + name );
     }
 
