@@ -27,7 +27,7 @@ public class Vector {
     }
 
     public double cos ( Vector vector) {
-        return scalarProduct ( vector ) / vector.vectorLenghth () * vector.vectorLenghth ();
+        return scalarProduct ( vector ) / vectorLenghth () * vector.vectorLenghth ();
     }
 
     public Vector add ( Vector vector) {
