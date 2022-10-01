@@ -4,10 +4,17 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 class Task2Test {
-    Integer[] result = new Integer[] { 1, 2, 3, 4, 5};
+    Integer[] resultFalse = new Integer[] { 1, 2, 3, 4, 5};
+    Integer[] resultTrue = new Integer[] { 5, 4, 3, 2, 1};
+
 
     @Test
-    void isDescending () {
-        Assertions.assertFalse ( Task2.isDescendingCheck ( result ) );
+    void isDescendingReturnFalse () {
+        Assertions.assertFalse ( Task2.isDescendingCheck ( resultFalse ) );
+    }
+
+    @Test
+    void isDescendingReturnTrue () {
+        Assertions.assertTrue ( Task2.isDescendingCheck ( resultTrue ) );
     }
 }
