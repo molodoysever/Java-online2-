@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 class Task1Test {
     int[] arrArr = new int[] {2, 3, 10 };
-    int[] arrGeom = new int[] {2, 2, 2 };
+    int[] arrGeom = new int[] {1, 1, 2, 2, 3 };
 
     @Test
     void avaregeArr () {
@@ -15,6 +15,6 @@ class Task1Test {
 
     @Test
     void averageGeom () {
-            Assertions.assertEquals ( 2, Task1.averageGeom ( arrGeom ) );
+            Assertions.assertEquals ( 1.5157165665103982, Task1.averageGeom ( arrGeom ) );
     }
 }

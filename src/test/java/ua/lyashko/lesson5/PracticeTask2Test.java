@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class PracticeTask2Test {
-    int[] sum = new int[] {1000, 2000, 3000};
+    int[] sum = new int[] {300, 500, 1000, 2000, 3000};
 
     @Test
     void findAvgSum () {

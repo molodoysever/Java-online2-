@@ -8,7 +8,6 @@ class Task2Test {
 
     @Test
     void isDescending () {
-        Integer[] expected = new Integer[] {5, 4, 3, 2, 1};
-        Assertions.assertArrayEquals ( expected, Task2.descendingSort ( result ) );
+        Assertions.assertFalse ( Task2.isDescendingCheck ( result ) );
     }
 }
