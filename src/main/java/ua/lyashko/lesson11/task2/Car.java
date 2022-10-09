@@ -9,7 +9,7 @@ public abstract class Car {
     private int fuelConsumption;
 
 
-    public void isMoving ( int fuel ) {
+    public void move ( ) {
         if (getCurrentFuel ( ) > getFuelConsumption ( )) {
             System.out.println ( "vehicle is moving" );
             setCurrentFuel ( getCurrentFuel ( ) - getFuelConsumption ( ) );

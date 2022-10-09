@@ -38,9 +38,13 @@ public class Truck extends Car implements Recovery {
     }
 
     @Override
-    public void isMoving ( int fuel ) {
-        setFuelConsumption ( getFuelConsumption ( ) * 2 );
-        super.isMoving ( fuel );
+    public void move () {
+        if (getCurrentFuel ( ) > getFuelConsumption ( )) {
+            System.out.println ( "vehicle is moving" );
+            setCurrentFuel ( getCurrentFuel ( ) - (getFuelConsumption ( ) * 2) );
+        } else {
+            System.out.println ( "tank is empty" );
+        }
     }
 
     @Override
@@ -54,6 +58,5 @@ public class Truck extends Car implements Recovery {
     public void refuel () {
         setCurrentFuel ( getTankSize ( ) );
         System.out.println ( "vehicle is refueled" );
-        setFuelConsumption ( getFuelConsumption ( ) / 2 );
     }
 }

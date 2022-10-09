@@ -1,5 +1,7 @@
 package ua.lyashko.lesson10.task1;
 
+import java.util.Objects;
+
 public class Student {
     private final String firstName;
     private final String lastName;
@@ -34,5 +36,17 @@ public class Student {
                 ", lastName='" + lastName + '\'' +
                 ", group='" + group + '\'' +
                 ", averageMark=" + averageMark;
+    }
+
+    @Override
+    public boolean equals ( Object o ) {
+        if (this == o) return true;
+        if (!( o instanceof Student student )) return false;
+        return Double.compare ( student.averageMark , averageMark ) == 0 && firstName.equals ( student.firstName ) && getLastName ( ).equals ( student.getLastName ( ) ) && group.equals ( student.group );
+    }
+
+    @Override
+    public int hashCode () {
+        return Objects.hash ( firstName , getLastName ( ) , group , averageMark );
     }
 }
