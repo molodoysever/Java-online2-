@@ -12,7 +12,7 @@ public class PassengerCar extends Car implements Recovery {
     }
 
 
-    public void getPassengerOnSeats (Passenger[] passengers, Object[] seats) {
+    public void getPassengerOnSeats (Passenger[] passengers) {
         for (int i = 0; i < seats.length; i++) {
             if (seats[i] == null) {
                 seats[i] = passengers[i];

@@ -39,7 +39,7 @@ public class Truck extends Car implements Recovery {
 
     @Override
     public void move () {
-        if (getCurrentFuel ( ) > getFuelConsumption ( )) {
+        if (getCurrentFuel ( ) > (getFuelConsumption ( ) * 2 ) ) {
             System.out.println ( "vehicle is moving" );
             setCurrentFuel ( getCurrentFuel ( ) - (getFuelConsumption ( ) * 2) );
         } else {

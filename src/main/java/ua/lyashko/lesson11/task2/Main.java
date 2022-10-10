@@ -14,7 +14,7 @@ public class Main {
                 55 , 25 , 7, seats );
 
         passengerCar.showStat ( );
-        passengerCar.getPassengerOnSeats (passengers, seats);
+        passengerCar.getPassengerOnSeats (passengers );
         passengerCar.showStat ();
         passengerCar.move ();
         passengerCar.showStat ( );
