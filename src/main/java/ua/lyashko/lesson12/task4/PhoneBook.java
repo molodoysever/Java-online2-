@@ -16,11 +16,9 @@ public class PhoneBook {
 
 
     public Optional<Integer> findIndexByPhoneNumber ( String phoneNumber ) {
-        int temp;
         for (int i = 0; i < PHONE_BOOK.length; i++) {
             if (phoneNumber.equals ( PHONE_BOOK[i] )) {
-                temp = i;
-                return Optional.of ( temp );
+                return Optional.of ( i );
             }
         }
         return Optional.empty ( );
