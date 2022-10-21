@@ -14,7 +14,7 @@ class Task2Test {
     @Test
     void stringListToMapWithKeyInteger () {
         list.add ( "java" );
-        Assertions.assertEquals ( Map.of (4, List.of ( "java" )), Task2.stringListToMapWithKeyInteger ( list ) );
+        Assertions.assertEquals ( Map.of ( 4 , List.of ( "java" ) ) , Task2.stringListToMapWithKeyInteger ( list ) );
     }
 
     @Test
@@ -22,13 +22,13 @@ class Task2Test {
         list.add ( "java" );
         list.add ( "JAVA" );
         list.add ( "c++" );
-        Assertions.assertEquals ( Map.of ( 4,List.of ("java" , "JAVA" ), 3, List.of ( "c++" ) ),
+        Assertions.assertEquals ( Map.of ( 4 , List.of ( "java" , "JAVA" ) , 3 , List.of ( "c++" ) ) ,
                 Task2.stringListToMapWithKeyInteger ( list ) );
     }
 
     @Test
     void emptyStringListToMap () {
         list.add ( "" );
-        Assertions.assertEquals ( Map.of (0, List.of ( "" )), Task2.stringListToMapWithKeyInteger ( list ) );
+        Assertions.assertEquals ( Map.of ( 0 , List.of ( "" ) ) , Task2.stringListToMapWithKeyInteger ( list ) );
     }
 }
