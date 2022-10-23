@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Task3<T> {
+public class Task3 {
 
     public static void addMillionElementsToList ( List<Integer> list ) {
         for (int i = 0; i <= 1_000_000; i++) {
