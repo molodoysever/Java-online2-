@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main ( String[] args ) throws IOException {
-        File file = new File ( "test.csv" );
+        File file = new File ( "src/main/resources/test.csv" );
         Scanner scanner = new Scanner ( System.in );
 
         try (FileWriter writer = new FileWriter ( file )) {

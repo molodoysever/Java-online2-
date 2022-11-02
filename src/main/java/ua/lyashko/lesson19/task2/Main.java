@@ -10,7 +10,7 @@ public class Main {
     public static void main ( String[] args ) {
         Gson gson = new Gson ();
 
-        try (Reader reader = new FileReader ( "box.json" )) {
+        try (Reader reader = new FileReader ( "src/main/resources/box.json" )) {
 
             Box box = gson.fromJson ( reader, Box.class );
             System.out.println (box );
