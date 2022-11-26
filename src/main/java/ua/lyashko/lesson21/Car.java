@@ -1,22 +1,26 @@
 package ua.lyashko.lesson21;
 
 public class Car {
-    private String name;
-    private String fuel;
+    @GetterCar
+    @SetterCar
+    @Validate (compareValue = "JEEP")
+    private final String name;
 
-    public String getName () {
-        return name;
-    }
+    @GetterCar
+    @SetterCar
+    @Validate (compareValue = "1000")
+    private final String fuel;
 
-    public String getFuel () {
-        return fuel;
-    }
-
-    public void setName ( String name ) {
+    public Car ( String name , String fuel ) {
         this.name = name;
+        this.fuel = fuel;
     }
 
-    public void setFuel ( String fuel ) {
-        this.fuel = fuel;
+    @Override
+    public String toString () {
+        return "Car{" +
+                "name='" + name + '\'' +
+                ", fuel='" + fuel + '\'' +
+                '}';
     }
 }
