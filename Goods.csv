@@ -1,0 +1,11 @@
+type,series,model,diagonal,screen type,country,price
+Telephone,S-10,Samsung,none,QLED,none,200
+Television,RTI-14,none,25,LED,China,1500
+Telephone,iPhone,Apple,none,Retina,none,1200
+Television,G2344,Samsung,73,LED,Korea,2000
+Telephone,MiPhone10,Xiaomi,none,QLED,none,350
+Television,lgTheBest,LG,55,LED,China,800
+Telephone,M3note,,none,QLED,none,1000
+Television,9944,Kiwi,48,LED,China,250
+Telephone,brick,Nokia,none,yes,none,50
+Television,1122,GG,90,LED,UA,1000

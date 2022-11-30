@@ -1,0 +1,6 @@
+
+Factory{factoryName='Sawmill', workerName='John', requiredTime=2000}16682137674202004
+line is busy
+Factory{factoryName='Carpentry', workerName='Dan', requiredTime=1550}16682137694343104
+Factory{factoryName='Pipeline', workerName='Stan', requiredTime=3020}16682137725393023
+Last date: 2022-11-12T02:42:52.539
