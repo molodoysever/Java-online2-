@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -16,14 +19,17 @@ public class Factory {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "factoryID")
-    int factoryID;
+    private int factoryID;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "country")
-    String country;
+    private String country;
 
+    @OneToMany (mappedBy = "factory")
+    @ToString.Exclude
+    private List<Device> deviceList = new ArrayList<> (  );
 
     public Factory ( String name , String country ) {
         this.name = name;

@@ -10,8 +10,8 @@ public class Main {
     public static void main ( String[] args ) {
         Session session = HibernateUtil.getSessionFactory ( ).openSession ( );
         Transaction transaction = session.beginTransaction ( );
-        TableUtil.generateDevices ( session );
         TableUtil.generateFactories ( session );
+        TableUtil.generateDevices ( session );
         Device device = TableUtil.getInfo ( session , 5 );
         TableUtil.changeData ( session , device );
         TableUtil.dropDevice ( session , 3 );

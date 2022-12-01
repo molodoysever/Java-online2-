@@ -16,30 +16,35 @@ public class Device {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "deviceID")
-    int deviceID;
+    private int deviceID;
 
     @Column(name = "type")
-    String type;
+    private String type;
 
     @Column(name = "name")
-    String name;
+    private String name;
 
     @Column(name = "price")
-    int price;
+    private int price;
 
     @Column(name = "manufacture")
-    Date manufactureDate;
+    private Date manufactureDate;
 
     @Column(name = "description")
-    String description;
+    private String description;
 
     @Column(name = "isAvailable")
-    boolean isAvailable;
+    private boolean isAvailable;
 
     @Column(name = "factoryID")
-    int factoryID;
+    private int factoryID;
 
-    public Device ( String type , String name , int price , Date manufactureDate , String description , boolean isAvailable , int factoryID ) {
+    @ManyToOne
+    private Factory factory;
+
+    public Device ( String type , String name , int price ,
+                    Date manufactureDate , String description , boolean isAvailable ,
+                    int factoryID , Factory factory ) {
         this.type = type;
         this.name = name;
         this.price = price;
@@ -47,5 +52,6 @@ public class Device {
         this.description = description;
         this.isAvailable = isAvailable;
         this.factoryID = factoryID;
+        this.factory = factory;
     }
 }

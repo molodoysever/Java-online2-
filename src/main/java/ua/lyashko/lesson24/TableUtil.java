@@ -11,6 +11,8 @@ import ua.lyashko.lesson24.enums.FactoryName;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class TableUtil {
@@ -21,6 +23,18 @@ public class TableUtil {
         int maxDay = (int) LocalDate.of ( 2022 , 1 , 1 ).toEpochDay ( );
         long randomDay = minDay + random.nextInt ( maxDay - minDay );
         return Date.valueOf ( LocalDate.ofEpochDay ( randomDay ) );
+    }
+
+    public static void generateFactories ( Session session ) {
+        Random random = new Random ( );
+        for (int i = 0; i < 4; i++) {
+            String tempName = String.valueOf (
+                    FactoryName.values ( )[random.nextInt ( FactoryName.values ( ).length )] );
+            String tempCountry = String.valueOf (
+                    FactoryCountry.values ( )[random.nextInt ( FactoryCountry.values ( ).length )] );
+            Factory factory = new Factory ( tempName , tempCountry );
+            session.save ( factory );
+        }
     }
 
     public static void generateDevices ( Session session ) {
@@ -35,21 +49,10 @@ public class TableUtil {
             String tempDescription = "good " + tempName + " for best price: " + tempPrice;
             boolean tempBoolean = random.nextBoolean ( );
             int tempFactoryID = random.nextInt ( 1 , 4 );
+            Factory factory = session.get ( Factory.class, tempFactoryID );
             Device device = new Device ( tempType , tempName , tempPrice , tempDate ,
-                    tempDescription , tempBoolean , tempFactoryID );
+                    tempDescription , tempBoolean , tempFactoryID , factory );
             session.save ( device );
-        }
-    }
-
-    public static void generateFactories ( Session session ) {
-        Random random = new Random ( );
-        for (int i = 0; i < 4; i++) {
-            String tempName = String.valueOf (
-                    FactoryName.values ( )[random.nextInt ( FactoryName.values ( ).length )] );
-            String tempCountry = String.valueOf (
-                    FactoryCountry.values ( )[random.nextInt ( FactoryCountry.values ( ).length )] );
-            Factory factory = new Factory ( tempName , tempCountry );
-            session.save ( factory );
         }
     }
 
