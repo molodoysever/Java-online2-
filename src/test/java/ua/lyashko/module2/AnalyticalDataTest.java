@@ -2,12 +2,14 @@ package ua.lyashko.module2;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import ua.lyashko.module2.entity.Customer;
+import ua.lyashko.module2.entity.Invoice;
+import ua.lyashko.module2.entity.Telephone;
+import ua.lyashko.module2.entity.Television;
+import ua.lyashko.module2.services.AnalyticalData;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class AnalyticalDataTest {
 
