@@ -10,11 +10,11 @@ public class DatabaseConnection {
         Connection connection = null;
         String user = "root";
         String password = "Password123!";
-        String url = "jdbc:mariadb://localhost:3306/dockTest";
+        String url = "jdbc:mariadb://localhost:3306/";
         try {
-            connection = DriverManager.getConnection ( url , user , password );
-            Statement statement = connection.createStatement ();
-            String str = "CREATE TABLE Hello (helloID INT AUTO_INCREMENT PRIMARY KEY);";
+            connection = DriverManager.getConnection ( url, user, password);
+            Statement statement = connection.createStatement ( );
+            String str = "CREATE database Hello;";
             statement.executeUpdate ( str );
         } catch ( SQLException e ) {
             e.printStackTrace ( );
