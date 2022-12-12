@@ -10,8 +10,7 @@
     <version>1.0-SNAPSHOT</version>
 
     <modules>
-        <module>lesson27Task1</module>
-        <module>lesson27Task2</module>
+        <module>lesson28</module>
     </modules>
 
     <dependencies>
