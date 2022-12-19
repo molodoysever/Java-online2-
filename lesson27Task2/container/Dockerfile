@@ -1,0 +1,7 @@
+FROM mariadb
+ENV MARIADB mariadb
+ENV NAME mdb
+ENV MARIADB_ROOT_PASSWORD=Password123!
+EXPOSE 3306
+
+
