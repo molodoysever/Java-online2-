@@ -5,7 +5,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class CreateTable {
-    public static void CreateDeviceTable ( Connection connection ) {
+    private static final Connection connection = TableUtil.createConnection ( );
+
+    public static void createDeviceTable () {
         try {
             Statement statement = connection.createStatement ( );
             String createDeviceTable = """
@@ -27,7 +29,7 @@ public class CreateTable {
         }
     }
 
-    public static void CreateFactoryTable ( java.sql.Connection connection ) {
+    public static void createFactoryTable () {
         try {
             Statement statement = connection.createStatement ( );
             String createFactoryTable = """
@@ -37,8 +39,8 @@ public class CreateTable {
                        country VARCHAR(30)
                        );""";
             statement.executeUpdate ( createFactoryTable );
-        } catch ( SQLException throwables ) {
-            throwables.printStackTrace ( );
+        } catch ( SQLException throwable ) {
+            throwable.printStackTrace ( );
         }
     }
 }
