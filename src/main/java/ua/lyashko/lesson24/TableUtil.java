@@ -2,8 +2,10 @@ package ua.lyashko.lesson24;
 
 import jakarta.persistence.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import ua.lyashko.lesson24.entity.Device;
 import ua.lyashko.lesson24.entity.Factory;
+import ua.lyashko.lesson24.entity.FactoryStats;
 import ua.lyashko.lesson24.enums.DeviceName;
 import ua.lyashko.lesson24.enums.DeviceType;
 import ua.lyashko.lesson24.enums.FactoryCountry;
@@ -16,6 +18,8 @@ import java.util.List;
 import java.util.Random;
 
 public class TableUtil {
+    private static final Session session = HibernateUtil.getSessionFactory ( ).openSession ( );
+    private static Transaction transaction;
 
     private static Date randomDate () {
         Random random = new Random ( );
@@ -25,7 +29,8 @@ public class TableUtil {
         return Date.valueOf ( LocalDate.ofEpochDay ( randomDay ) );
     }
 
-    public static void generateFactories ( Session session ) {
+    public static void generateFactories () {
+        transaction = session.beginTransaction ();
         Random random = new Random ( );
         for (int i = 0; i < 4; i++) {
             String tempName = String.valueOf (
@@ -35,9 +40,11 @@ public class TableUtil {
             Factory factory = new Factory ( tempName , tempCountry );
             session.save ( factory );
         }
+        transaction.commit ();
     }
 
-    public static void generateDevices ( Session session ) {
+    public static void generateDevices () {
+        transaction = session.beginTransaction ();
         Random random = new Random ( );
         for (int i = 0; i < 10; i++) {
             String tempType = String.valueOf (
@@ -49,48 +56,65 @@ public class TableUtil {
             String tempDescription = "good " + tempName + " for best price: " + tempPrice;
             boolean tempBoolean = random.nextBoolean ( );
             int tempFactoryID = random.nextInt ( 1 , 4 );
-            Factory factory = session.get ( Factory.class, tempFactoryID );
+            Factory factory = session.get ( Factory.class , tempFactoryID );
             Device device = new Device ( tempType , tempName , tempPrice , tempDate ,
                     tempDescription , tempBoolean , tempFactoryID , factory );
             session.save ( device );
         }
+        transaction.commit ();
     }
 
-    public static Device getInfo ( Session session , int deviceID ) {
-        Device device = session.get ( Device.class , deviceID );
-        System.out.println ( device );
-        return device;
+    public static Factory getFactory(Device device) {
+        return device.getFactory ();
     }
 
-    public static void changeData ( Session session , Device device ) {
+    public static Device getDevice ( int deviceID ) {
+        return session.get ( Device.class , deviceID );
+    }
+
+    public static void changeData ( Device device ) {
+        transaction = session.beginTransaction ();
         String deviceID = String.valueOf ( device.getDeviceID ( ) );
         Query query = session.createQuery ( "UPDATE Device set price = :priceParam, description = :description" + " where deviceID = :devID" );
         query.setParameter ( "priceParam" , "55" );
         query.setParameter ( "description" , "aaa" );
         query.setParameter ( "devID" , deviceID );
         query.executeUpdate ( );
+        transaction.commit ();
     }
 
-    public static void dropDevice ( Session session , int deviceID ) {
+    public static void dropDevice ( int deviceID ) {
+        transaction = session.beginTransaction ();
         Query query = session.createQuery ( "delete Device where deviceID = :param" );
         query.setParameter ( "param" , String.valueOf ( deviceID ) );
         query.executeUpdate ( );
+        transaction.commit ();
     }
 
-    public static void getAllDevicesByFactory ( Session session , int factoryID ) {
+    public static List<Device> getAllDevicesByFactory ( int factoryID ) {
+        transaction = session.beginTransaction ();
         Query query = session.createQuery ( "from Device where factoryID = :param" );
         query.setParameter ( "param" , String.valueOf ( factoryID ) );
-        var deviceList = query.getResultList ( );
-        System.out.println ( deviceList );
+        List <Device> deviceList = query.getResultList ( );
+        transaction.commit ();
+        return deviceList;
     }
 
-    public static void getQuantityAndSum ( Session session ) {
-        Query query = session.createQuery ( "select COUNT(deviceID), SUM (price) " +
+    public static List<FactoryStats> getQuantityAndSum ( ) {
+        List<FactoryStats> factoryStatsList = new ArrayList<> (  );
+        transaction = session.beginTransaction ();
+        Query query = session.createQuery ( "select COUNT(deviceID), SUM (price), factoryID " +
                 "from Device GROUP BY factoryID" );
         var deviceList = query.getResultList ( );
         for (Object o : deviceList) {
+            FactoryStats factoryStats = new FactoryStats ();
             Object[] row = (Object[]) o;
-            System.out.println ( row[0] + " , " + row[1] );
+            factoryStats.setCount ( (long) row[0] );
+            factoryStats.setPrice ( (long) row[1] );
+            factoryStats.setFactoryID ((int) row[2] );
+            factoryStatsList.add ( factoryStats );
         }
+        transaction.commit ();
+        return factoryStatsList;
     }
 }

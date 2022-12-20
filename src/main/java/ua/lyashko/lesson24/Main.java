@@ -1,22 +1,16 @@
 package ua.lyashko.lesson24;
-
-
-import org.hibernate.Session;
-import org.hibernate.Transaction;
 import ua.lyashko.lesson24.entity.Device;
 
 
 public class Main {
     public static void main ( String[] args ) {
-        Session session = HibernateUtil.getSessionFactory ( ).openSession ( );
-        Transaction transaction = session.beginTransaction ( );
-        TableUtil.generateFactories ( session );
-        TableUtil.generateDevices ( session );
-        Device device = TableUtil.getInfo ( session , 5 );
-        TableUtil.changeData ( session , device );
-        TableUtil.dropDevice ( session , 3 );
-        TableUtil.getAllDevicesByFactory ( session , 2 );
-        TableUtil.getQuantityAndSum ( session );
-        transaction.commit ( );
+        TableUtil.generateFactories ( );
+        TableUtil.generateDevices ( );
+        Device device = TableUtil.getDevice ( 5 );
+        TableUtil.getFactory ( device );
+        TableUtil.changeData ( device );
+        TableUtil.dropDevice ( 3 );
+        System.out.println ( TableUtil.getAllDevicesByFactory ( 3 ) );
+        System.out.println ( TableUtil.getQuantityAndSum ( ) );
     }
 }
