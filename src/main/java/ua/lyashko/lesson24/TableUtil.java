@@ -19,7 +19,6 @@ import java.util.Random;
 
 public class TableUtil {
     private static final Session session = HibernateUtil.getSessionFactory ( ).openSession ( );
-    private static Transaction transaction;
 
     private static Date randomDate () {
         Random random = new Random ( );
@@ -30,7 +29,7 @@ public class TableUtil {
     }
 
     public static void generateFactories () {
-        transaction = session.beginTransaction ();
+        Transaction transaction = session.beginTransaction ( );
         Random random = new Random ( );
         for (int i = 0; i < 4; i++) {
             String tempName = String.valueOf (
@@ -40,11 +39,11 @@ public class TableUtil {
             Factory factory = new Factory ( tempName , tempCountry );
             session.save ( factory );
         }
-        transaction.commit ();
+        transaction.commit ( );
     }
 
     public static void generateDevices () {
-        transaction = session.beginTransaction ();
+        Transaction transaction = session.beginTransaction ( );
         Random random = new Random ( );
         for (int i = 0; i < 10; i++) {
             String tempType = String.valueOf (
@@ -61,11 +60,11 @@ public class TableUtil {
                     tempDescription , tempBoolean , tempFactoryID , factory );
             session.save ( device );
         }
-        transaction.commit ();
+        transaction.commit ( );
     }
 
-    public static Factory getFactory(Device device) {
-        return device.getFactory ();
+    public static Factory getFactory ( Device device ) {
+        return session.get ( Factory.class , device.getFactoryID ( ) );
     }
 
     public static Device getDevice ( int deviceID ) {
@@ -73,48 +72,48 @@ public class TableUtil {
     }
 
     public static void changeData ( Device device ) {
-        transaction = session.beginTransaction ();
+        Transaction transaction = session.beginTransaction ( );
         String deviceID = String.valueOf ( device.getDeviceID ( ) );
         Query query = session.createQuery ( "UPDATE Device set price = :priceParam, description = :description" + " where deviceID = :devID" );
         query.setParameter ( "priceParam" , "55" );
         query.setParameter ( "description" , "aaa" );
         query.setParameter ( "devID" , deviceID );
         query.executeUpdate ( );
-        transaction.commit ();
+        transaction.commit ( );
     }
 
     public static void dropDevice ( int deviceID ) {
-        transaction = session.beginTransaction ();
+        Transaction transaction = session.beginTransaction ( );
         Query query = session.createQuery ( "delete Device where deviceID = :param" );
         query.setParameter ( "param" , String.valueOf ( deviceID ) );
         query.executeUpdate ( );
-        transaction.commit ();
+        transaction.commit ( );
     }
 
     public static List<Device> getAllDevicesByFactory ( int factoryID ) {
-        transaction = session.beginTransaction ();
+        Transaction transaction = session.beginTransaction ( );
         Query query = session.createQuery ( "from Device where factoryID = :param" );
         query.setParameter ( "param" , String.valueOf ( factoryID ) );
-        List <Device> deviceList = query.getResultList ( );
-        transaction.commit ();
+        List<Device> deviceList = query.getResultList ( );
+        transaction.commit ( );
         return deviceList;
     }
 
-    public static List<FactoryStats> getQuantityAndSum ( ) {
-        List<FactoryStats> factoryStatsList = new ArrayList<> (  );
-        transaction = session.beginTransaction ();
+    public static List<FactoryStats> getQuantityAndSum () {
+        List<FactoryStats> factoryStatsList = new ArrayList<> ( );
+        Transaction transaction = session.beginTransaction ( );
         Query query = session.createQuery ( "select COUNT(deviceID), SUM (price), factoryID " +
                 "from Device GROUP BY factoryID" );
         var deviceList = query.getResultList ( );
         for (Object o : deviceList) {
-            FactoryStats factoryStats = new FactoryStats ();
+            FactoryStats factoryStats = new FactoryStats ( );
             Object[] row = (Object[]) o;
             factoryStats.setCount ( (long) row[0] );
             factoryStats.setPrice ( (long) row[1] );
-            factoryStats.setFactoryID ((int) row[2] );
+            factoryStats.setFactoryID ( (int) row[2] );
             factoryStatsList.add ( factoryStats );
         }
-        transaction.commit ();
+        transaction.commit ( );
         return factoryStatsList;
     }
 }
