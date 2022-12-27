@@ -60,7 +60,7 @@ public class Device {
         this.description = description;
     }
 
-    public boolean isAvailable () {
+    public boolean getAvailable () {
         return isAvailable;
     }
 

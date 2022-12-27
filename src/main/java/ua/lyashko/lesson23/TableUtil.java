@@ -64,17 +64,16 @@ public class TableUtil {
 
     public static Factory getFactory ( Device device ) {
         Factory factory = new Factory ( );
-        int factoryID = device.factoryID;
         try {
             Statement statement = connection.createStatement (
                     ResultSet.TYPE_FORWARD_ONLY ,
                     ResultSet.CONCUR_READ_ONLY );
-            String temp = "SELECT * FROM Factory WHERE factoryID = " + factoryID;
+            String temp = "SELECT * FROM Factory WHERE factoryID = " + device.getFactoryID ( );
             ResultSet resultSet = statement.executeQuery ( temp );
             resultSet.first ( );
-            factory.factoryID = Integer.parseInt ( resultSet.getString ( "factoryID" ) );
-            factory.country = resultSet.getString ( "country" );
-            factory.name = resultSet.getString ( "name" );
+            factory.setFactoryID ( Integer.parseInt ( resultSet.getString ( "factoryID" ) ) );
+            factory.setCountry ( resultSet.getString ( "country" ) );
+            factory.setName ( resultSet.getString ( "name" ) );
         } catch ( SQLException e ) {
             e.printStackTrace ( );
         }
@@ -92,14 +91,14 @@ public class TableUtil {
             String getInformation = "SELECT * FROM Device WHERE deviceID = " + deviceID;
             ResultSet resultSet = statement.executeQuery ( getInformation );
             while ( resultSet.next ( ) ) {
-                device.deviceID = Integer.parseInt ( resultSet.getString ( "deviceID" ) );
-                device.type = resultSet.getString ( "type" );
-                device.name = resultSet.getString ( "name" );
-                device.price = Integer.parseInt ( resultSet.getString ( "price" ) );
-                device.manufactureDate = Date.valueOf ( resultSet.getString ( "manufactureDate" ) );
-                device.description = resultSet.getString ( "description" );
-                device.isAvailable = Boolean.parseBoolean ( resultSet.getString ( "isAvailable" ) );
-                device.factoryID = Integer.parseInt ( resultSet.getString ( "factoryID" ) );
+                device.setDeviceID ( Integer.parseInt ( resultSet.getString ( "deviceID" ) ) );
+                device.setType ( resultSet.getString ( "type" ) );
+                device.setName ( resultSet.getString ( "name" ) );
+                device.setPrice ( Integer.parseInt ( resultSet.getString ( "price" ) ) );
+                device.setManufactureDate ( Date.valueOf ( resultSet.getString ( "manufactureDate" ) ) );
+                device.setDescription ( resultSet.getString ( "description" ) );
+                device.setAvailable ( Boolean.parseBoolean ( resultSet.getString ( "isAvailable" ) ) );
+                device.setFactoryID ( Integer.parseInt ( resultSet.getString ( "factoryID" ) ) );
 
                 factory = getFactory ( device );
                 statement.close ( );
@@ -113,27 +112,20 @@ public class TableUtil {
     }
 
     public static void updateData ( Device device ) {
-        int deviceID = device.deviceID;
-        String type = device.type;
-        String name = device.name;
-        int price = device.price;
-        Date manufactureDate = device.manufactureDate;
         String description = "blablabla";
-        boolean isAvailable = device.isAvailable;
-        int factoryID = device.factoryID;
-
         try {
-            Statement statement = connection.createStatement ( );
-            String str = "UPDATE Device SET type = ' " + type + "' , " +
-                    "name = '" + name + "' , " +
-                    "price = " + price + " , " +
-                    "manufactureDate = '" + manufactureDate + "' , " +
-                    "description = '" + description + "' , " +
-                    "isAvailable = " + isAvailable + " , " +
-                    "factoryID = " + factoryID + " " +
-                    "WHERE deviceID = " + deviceID;
-            statement.executeUpdate ( str );
-            statement.close ( );
+            String str = "UPDATE Device SET type = ?, name = ?, price = ?, manufactureDate = ?," +
+                    "description = ?, isAvailable = ?, factoryID = ? WHERE deviceID = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement ( str );
+            preparedStatement.setString ( 1 , device.getType ( ) );
+            preparedStatement.setString ( 2 , device.getName ( ) );
+            preparedStatement.setInt ( 3 , device.getPrice ( ) );
+            preparedStatement.setDate ( 4 , device.getManufactureDate ( ) );
+            preparedStatement.setString ( 5 , description );
+            preparedStatement.setBoolean ( 6 , device.getAvailable ( ) );
+            preparedStatement.setInt ( 7 , device.getFactoryID ( ) );
+            preparedStatement.setInt ( 8 , device.getDeviceID ( ) );
+            preparedStatement.executeUpdate ( );
         } catch ( SQLException e ) {
             e.printStackTrace ( );
         }
