@@ -1,71 +1,67 @@
 package hw26.repository.hibernate;
 
+import hw26.config.HibernateUtils;
 import hw26.entity.Client;
-import hw26.entity.Order;
 import hw26.repository.ClientRepository;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.Query;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ClientRepositoryImpl extends AbstractHibernateRepository<Client> implements ClientRepository {
     protected void init () {
         aClass = Client.class;
     }
 
-    private static final OrderRepositoryImpl orderRepository = new OrderRepositoryImpl ( );
+    private static final EntityManager entityManager = HibernateUtils.getEntityManager ( );
+
+    private static List<Client> clientListConverter ( Query query ) {
+        List<Client> clients = new ArrayList<> ( );
+        List<Client> list = query.getResultList ( );
+        for (Object o : list) {
+            Object[] row = (Object[]) o;
+            Client client = (Client) row[0];
+            clients.add ( client );
+        }
+        return clients;
+    }
+
 
     @Override
     public List<Client> getClientsWithAmountOfOrdersGreater ( int amount ) {
-        List<Client> clients = getAll ( );
-        List<Order> orders = orderRepository.getAll ( );
-        List<Order> clientsOrder = new ArrayList<> ( );
-        List<Client> clientList = new ArrayList<> ( );
-
-        for (Client value : clients) {
-            for (Order item : orders) {
-                if (Objects.equals ( value.getId ( ) , item.getClient ( ).getId ( ) )) {
-                    clientsOrder.add ( item );
-                    if (clientsOrder.size ( ) > amount) {
-                        clientList.add ( value );
-                    }
-                }
-            }
-        }
-        return clientList;
+        Session session = entityManager.unwrap ( Session.class );
+        Transaction transaction = session.beginTransaction ( );
+        Query query = entityManager.createQuery ( "SELECT client, COUNT (id)" +
+                "from orders GROUP BY client HAVING COUNT(id) >" + amount );
+        List<Client> clients = clientListConverter ( query );
+        transaction.commit ( );
+        return clients;
     }
 
     @Override
     public int removeAllClientsYoungerThan ( int age ) {
-        List<Client> clients = getAll ( );
-        clients.removeIf ( client -> ( LocalDate.now ( ).getYear ( ) - client.getDateOfBirth ( ).getYear ( ) ) < age );
-        return clients.size ( );
+        LocalDate date = LocalDate.of ( LocalDate.now ( ).getYear ( ) - age , LocalDate.now ().getMonth (), LocalDate.now ().getDayOfMonth () );
+        Session session = entityManager.unwrap ( Session.class );
+        Transaction transaction = session.beginTransaction ();
+        Query query = entityManager.createQuery ( "DELETE clients where dateOfBirth < '" + date + "'");
+        int result = query.executeUpdate ();
+        transaction.commit ();
+        return result;
     }
 
     @Override
     public List<Client> getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater ( int amountOfOrders , int goodsLimit ) {
-        List<Client> clients = getAll ( );
-        List<Order> orders = orderRepository.getAll ( );
-        List<Client> clientList = new ArrayList<> ( );
-        List<Order> orderList = new ArrayList<> ( );
-        int orderSum = 0;
-        int goodsNumber = 0;
-
-        for (Client client : clients) {
-            for (Order order : orders) {
-                if (Objects.equals ( client.getId ( ) , order.getClient ( ).getId ( ) )) {
-                    orderList.add ( order );
-                }
-                orderSum = orderList.stream ( )
-                        .mapToInt ( x -> x.getTotalPrice ( ).intValue ( ) ).sum ( );
-                goodsNumber = order.getGoods ( ).size ( );
-
-                if (orderSum > amountOfOrders && goodsNumber > goodsLimit) {
-                    clientList.add ( client );
-                }
-            }
-        }
-        return clientList;
+        Session session = entityManager.unwrap ( Session.class );
+        Transaction transaction = session.beginTransaction ( );
+        Query query = entityManager.createQuery ( "SELECT client, COUNT(id) from orders" +
+                " WHERE size(goods) > " + goodsLimit +
+                " GROUP BY client HAVING SUM(totalPrice) > " + amountOfOrders);
+        List<Client> clients = clientListConverter ( query );
+        transaction.commit ( );
+        return clients;
     }
 }

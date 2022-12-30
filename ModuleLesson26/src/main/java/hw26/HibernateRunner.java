@@ -33,13 +33,16 @@ public class HibernateRunner {
         System.out.println ( "\nClients with amount of orders greater: " + clientRepository.getClientsWithAmountOfOrdersGreater ( 1 ) );
         System.out.println ( "\nClients with age more then limit: " + clientRepository.removeAllClientsYoungerThan ( 5 ) );
         System.out.println ( "\nClients with orderSum and goodsInOrder more then limit: "
-                + clientRepository.getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater ( 3300 , 0 ) );
+                + clientRepository.getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater ( 900 , 0 ) );
     }
 
     private static Client createAndSaveClient () {
         Client client = new Client ( "Tester" , "Testerov" , LocalDate.of ( 2022 ,
                 random.nextInt ( 1 , 12 ) , random.nextInt ( 1 , 30 ) ) );
+        Client client1 = new Client ( "Tester1" , "Testerov1" , LocalDate.of ( 2022 ,
+                random.nextInt ( 1 , 12 ) , random.nextInt ( 1 , 30 ) ) );
         clientRepository.save ( client );
+        clientRepository.save ( client1 );
         List<Client> clientList = clientRepository.getAll ( );
         client = clientList.get ( clientList.size ( ) - 1 );
         return client;
@@ -47,7 +50,9 @@ public class HibernateRunner {
 
     private static Goods createAndSaveGoods () {
         Goods goods = new Goods ( BigDecimal.valueOf ( 2000 ) , "Test goods" , "Test category" );
+        Goods goods1 = new Goods ( BigDecimal.valueOf ( 2000 ) , "Test goods" , "Test category" );
         goodsRepository.save ( goods );
+        goodsRepository.save ( goods1 );
         List<Goods> goodsList = goodsRepository.getAll ( );
         return goodsList.get ( goodsList.size ( ) - 1 );
     }

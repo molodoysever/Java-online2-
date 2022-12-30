@@ -34,7 +34,7 @@ public class JdbcRunner {
         System.out.println ( orderRepository.getOrdersWithDiscount ( ) );
         System.out.println ( clientRepository.getClientsWithAmountOfOrdersGreater ( 1 ) );
         System.out.println ( clientRepository.removeAllClientsYoungerThan ( 7 ) );
-        System.out.println ( clientRepository.getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater ( 2500 , 1 ) );
+        System.out.println ( clientRepository.getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater ( 900 , 0 ) );
     }
 
     private static Client createAndSaveClient () {

@@ -1,6 +1,7 @@
 package hw26.repository.jdbc;
 
 import hw26.entity.Client;
+import hw26.entity.Order;
 import hw26.repository.ClientRepository;
 import lombok.SneakyThrows;
 
@@ -10,18 +11,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ClientRepositoryImpl extends AbstractJDBCRepository implements ClientRepository {
-    private final String createUserSQL = "INSERT INTO clients (client_id, first_name, last_name, date_of_birth) VALUES (?,?,?,?)";
-    private final String selectAllClientsSQL = "SELECT * FROM clients";
-    private final String selectClientByIdSQL = "SELECT * FROM clients WHERE client_id = ?";
-
-    private final String getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater = "";
-
+    private final String CREATE_USER_SQL = "INSERT INTO clients (client_id, first_name, last_name, date_of_birth) VALUES (?,?,?,?)";
+    private final String SELECT_ALL_CLIENTS_SQL = "SELECT * FROM clients";
+    private final String SELECT_CLIENT_BY_ID_SQL = "SELECT * FROM clients WHERE client_id = ?";
 
     @SneakyThrows
     @Override
     public Client getById ( String id ) {
         try (Connection connection = createConnection ( );
-             PreparedStatement statement = connection.prepareStatement ( selectClientByIdSQL )) {
+             PreparedStatement statement = connection.prepareStatement ( SELECT_CLIENT_BY_ID_SQL )) {
             statement.setString ( 1 , id );
             try (ResultSet resultSet = statement.executeQuery ( )) {
                 if (resultSet.next ( )) {
@@ -38,7 +36,7 @@ public class ClientRepositoryImpl extends AbstractJDBCRepository implements Clie
         List<Client> clients = new ArrayList<> ( );
         try (Connection connection = createConnection ( );
              Statement statement = connection.createStatement ( );
-             ResultSet resultSet = statement.executeQuery ( selectAllClientsSQL )) {
+             ResultSet resultSet = statement.executeQuery ( SELECT_ALL_CLIENTS_SQL )) {
             while ( resultSet.next ( ) ) {
                 clients.add ( extractClientFromResultSet ( resultSet ) );
             }
@@ -50,7 +48,7 @@ public class ClientRepositoryImpl extends AbstractJDBCRepository implements Clie
     @Override
     public void save ( Client client ) {
         try (Connection connection = createConnection ( );
-             PreparedStatement statement = connection.prepareStatement ( createUserSQL )) {
+             PreparedStatement statement = connection.prepareStatement ( CREATE_USER_SQL )) {
             statement.setString ( 1 , client.getId ( ) );
             statement.setString ( 2 , client.getFirstName ( ) );
             statement.setString ( 3 , client.getLastName ( ) );
@@ -71,55 +69,45 @@ public class ClientRepositoryImpl extends AbstractJDBCRepository implements Clie
     @SneakyThrows
     @Override
     public List<Client> getClientsWithAmountOfOrdersGreater ( int amount ) {
-        String temp = "SELECT  *, COUNT(orders.client_id = clients.client_id)" +
-                " FROM clients RIGHT JOIN orders ON clients.client_id = orders.client_id" +
-                " GROUP BY clients.client_id";
+        String temp = "SELECT client_id FROM orders GROUP BY client_id HAVING COUNT (order_id) > " + amount;
         List<Client> clients = new ArrayList<> ( );
 
         try (Connection connection = createConnection ( );
              Statement statement = connection.createStatement ( );
              ResultSet resultSet = statement.executeQuery ( temp )) {
-
             while ( resultSet.next ( ) ) {
-                String s = resultSet.getString ( "count(orders.client_id = clients.client_id)" );
-                if (Integer.parseInt ( s ) > amount) {
-                    clients.add ( extractClientFromResultSet ( resultSet ) );
-                }
+                Client client = getById ( resultSet.getString ( "client_id" ) );
+                clients.add ( client );
             }
             return clients;
         }
     }
 
+    @SneakyThrows
     @Override
     public int removeAllClientsYoungerThan ( int age ) {
-        List<Client> clients = getAll ( );
-        clients.removeIf ( client -> ( LocalDate.now ( ).getYear ( ) - client.getDateOfBirth ( ).getYear ( ) ) < age );
-        return clients.size ( );
+        LocalDate date = LocalDate.of ( LocalDate.now ( ).getYear ( ) - age , LocalDate.now ().getMonth (), LocalDate.now ().getDayOfMonth () );
+        String temp = "DELETE FROM clients WHERE date_of_birth < " + date;
+        Connection connection = createConnection ( );
+        Statement statement = connection.prepareStatement ( temp );
+        return statement.executeUpdate ( temp );
     }
 
     @SneakyThrows
     @Override
     public List<Client> getClientsWithSumOfOrdersGreaterAndAmountOfGoodsInOrderGreater ( int amountOfOrders , int goodsLimit ) {
-        String temp = "SELECT *, SUM(total_price)," +
-                " COUNT (goods_id) " +
-                " FROM clients " +
-                " RIGHT JOIN orders ON clients.client_id = orders.client_id" +
-                " RIGHT JOIN orders_goods ON orders.order_id  = orders_goods.order_id" +
-                " GROUP BY clients.client_id";
+        String temp = "SELECT client_id from orders " +
+                "WHERE order_id IN (SELECT order_id from orders_goods GROUP BY order_id HAVING COUNT(goods_id) >" + goodsLimit + " ) " +
+                "GROUP BY client_id " +
+                "HAVING SUM(total_price) > " + amountOfOrders;
 
         List<Client> clients = new ArrayList<> ( );
-        amountOfOrders = (int) Long.parseLong ( String.valueOf ( amountOfOrders ) );
-
         try (Connection connection = createConnection ( );
              Statement statement = connection.createStatement ( );
              ResultSet resultSet = statement.executeQuery ( temp )) {
             while ( resultSet.next ( ) ) {
-                long s = resultSet.getLong ( "sum(total_price)" );
-                String t = resultSet.getString ( "count (goods_id)" );
-
-                if (( s ) > amountOfOrders && Integer.parseInt ( t ) > goodsLimit) {
-                    clients.add ( extractClientFromResultSet ( resultSet ) );
-                }
+                Client client = getById ( resultSet.getString ( "client_id" ) );
+                clients.add ( client );
             }
             return clients;
         }
