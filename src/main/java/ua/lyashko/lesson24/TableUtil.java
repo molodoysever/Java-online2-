@@ -74,10 +74,22 @@ public class TableUtil {
     public static void changeData ( Device device ) {
         Transaction transaction = session.beginTransaction ( );
         String deviceID = String.valueOf ( device.getDeviceID ( ) );
-        Query query = session.createQuery ( "UPDATE Device set price = :priceParam, description = :description" + " where deviceID = :devID" );
+        Query query = session.createQuery ( "UPDATE Device set type = :typeParam," +
+                " name = :nameParam," +
+                " price = :priceParam," +
+                " manufactureDate = :manufactureParam," +
+                " description = :description," +
+                " isAvailable = :availableParam," +
+                " factoryID = :factoryParam " +
+                " where deviceID = :devID" );
+        query.setParameter ( "typeParam", device.getType () );
+        query.setParameter ( "nameParam", device.getName () );
         query.setParameter ( "priceParam" , "55" );
+        query.setParameter ( "manufactureParam", device.getManufactureDate () );
         query.setParameter ( "description" , "aaa" );
-        query.setParameter ( "devID" , deviceID );
+        query.setParameter ( "availableParam", device.isAvailable () );
+        query.setParameter ( "factoryParam", device.getFactoryID () );
+        query.setParameter ( "devID" , device.getDeviceID () );
         query.executeUpdate ( );
         transaction.commit ( );
     }
