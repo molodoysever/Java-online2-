@@ -9,16 +9,10 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Serial;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class MainServlet extends HttpServlet {
-
-    private String user1;
-    private String user2;
-    private String user3;
-    private String user4;
+    Map<String, String> users = fillMap ( );
 
     @Serial
     private static final long serialVersionUID = -8948379822734246956L;
@@ -27,35 +21,36 @@ public class MainServlet extends HttpServlet {
     @Override
     public void init ( ServletConfig config ) {
         super.init ( config );
-        this.user1 = config.getInitParameter ( "user1" );
-        this.user2 = config.getInitParameter ( "user2" );
-        this.user3 = config.getInitParameter ( "user3" );
-        this.user4 = config.getInitParameter ( "user4" );
     }
 
     @Override
     protected void doGet ( HttpServletRequest req , HttpServletResponse resp ) throws IOException {
         PrintWriter responseBody = resp.getWriter ( );
-        String defUser = req.getRemoteAddr () + " User-Agent: " + req.getHeader ("User-Agent" );
-        List<String> userIp = new ArrayList<> ( );
-        userIp.add ( user1 );
-        userIp.add ( user2 );
-        userIp.add ( user3 );
-        userIp.add ( user4 );
-        userIp.add ( defUser );
+        String currentUser = req.getRemoteAddr ( ) + " " + req.getHeader ( "User-Agent" );
+        users.put ( req.getRemoteAddr ( ) , req.getHeader ( "User-Agent" ) );
 
         resp.setContentType ( "text/html" );
         responseBody.println ( "<html>" );
-        responseBody.println ( "<head> <title> last 5 user IP </title> </head>" );
-        for (int i = 0; i < userIp.size ( ); i++) {
-            if (Objects.equals ( userIp.get ( i ) , defUser )) {
-                responseBody.println ( "<b> user " + ( i + 1 ) + " ip = " + userIp.get ( i ) + "</b>" );
+        responseBody.println ( "<head> <title> user IP: </title> </head>" );
+        for (String key : users.keySet ( )) {
+            if (key.equals ( req.getRemoteAddr ( ) )) {
+                responseBody.println ( "<b>" + currentUser + "<br></b>" );
             } else {
-                userIp.set ( i , userIp.get ( i ) + " User-Agent: " + req.getHeader ( "User-Agent" ) );
-                responseBody.println ( "<p>user " + ( i + 1 ) + " ip = " + userIp.get ( i ) + "</p>" );
+                responseBody.println ( "<p>" + key + " " + users.get ( key ) + "<br></p>" );
             }
         }
         responseBody.println ( "<html>" );
+
+    }
+
+    private Map<String, String> fillMap () {
+        Map<String, String> userIp = new HashMap<> ( );
+        userIp.put ( "0:0:0:0:0:0:0:2" , "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15" );
+        userIp.put ( "0:0:0:0:0:0:0:3" , "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15" );
+        userIp.put ( "0:0:0:0:0:0:0:4" , "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15" );
+        userIp.put ( "0:0:0:0:0:0:0:5" , "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15" );
+        userIp.put ( "0:0:0:0:0:0:0:6" , "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/16.1 Safari/605.1.15" );
+        return userIp;
     }
 
     @Override
