@@ -8,19 +8,17 @@ import lombok.EqualsAndHashCode;
 @Data
 public class MyThread extends Thread {
     Counter counter;
-    int number;
 
     public MyThread ( Counter counter ) {
         this.counter = counter;
     }
 
-
     @Override
     public void run () {
-        while ( counter.getCounter ( ) < 1 ) {
-            counter.increaseCounter ( );
-            number = counter.count ( );
-            System.out.println ( number );
+        for (Integer integer : counter.list) {
+            if (counter.isPrime ( integer )) {
+                counter.increaseCounter ( );
+            }
         }
     }
 }
